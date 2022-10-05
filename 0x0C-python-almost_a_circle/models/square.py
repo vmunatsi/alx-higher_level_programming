@@ -1,48 +1,64 @@
 #!/usr/bin/python3
-"""Module Square"""
+"""Define Rectangle Class
+"""
+
 from models.rectangle import Rectangle
-import json
 
 
 class Square(Rectangle):
-    """Class Square"""
-    def __init__(self, size, x=0, y=0, id=None):
-        """Init method"""
-        super().__init__(size, size, x, y, id)
-        self.size = size
+    """Module Representation of Square
+"""
 
-    def __str__(self):
-        return "[Square] ({}) {}/{} - {}".format(
-            self.id, self.x, self.y, self.width)
+    def __init__(self, size, x=0, y=0, id=None):
+        """Initialization a Square
+        """
+        super().__init__(size, size, x, y, id)
 
     @property
     def size(self):
-        """Width getter"""
+        """module Square size getter
+        """
         return self.width
 
     @size.setter
     def size(self, value):
-        """Width setter"""
-        if type(value) != int:
-            raise TypeError('width must be an integer')
-        if value < 0:
-            raise ValueError('width must be > 0')
+        """module Square size setter
+        """
         self.width = value
         self.height = value
 
+    def __str__(self):
+        """module string represation of square
+        """
+        return "[Square] ({:d}) {:d}/{:d} - {:d}".format(self.id,
+                                                         self.x,
+                                                         self.y,
+                                                         self.width)
+
     def update(self, *args, **kwargs):
-        """Update method"""
-        attributes = ["id", "size", "x", "y"]
-        if args is not None:
-            for i in range(len(args)):
-                setattr(self, attributes[i], args[i])
-        if len(args) == 0 or args[0] == "":
-            if kwargs is not None:
-                for key, value in kwargs.items():
+        """module update square
+        """
+        if len(args):
+            for i, arg in enumerate(args):
+                if i == 0:
+                    self.id = arg
+                elif i == 1:
+                    self.size = arg
+                elif i == 2:
+                    self.x = arg
+                elif i == 3:
+                    self.y = arg
+        else:
+            for key, value in kwargs.items():
+                if hasattr(self, key) is True:
                     setattr(self, key, value)
 
     def to_dictionary(self):
-        """To dictionary method"""
-        attributes = ["id", "size", "x", "y"]
-        values = [self.id, self.width, self.x, self.y]
-        return dict(zip(attributes, values))
+        """retrun dictonary
+        """
+        return {
+            "id": self.id,
+            "size": self.size,
+            "x": self.x,
+            "y": self.y
+        }
