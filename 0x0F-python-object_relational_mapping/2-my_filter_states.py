@@ -1,19 +1,21 @@
 #!/usr/bin/python3
-""" Module 0-select_states """
+
+
 import MySQLdb
 from sys import argv
 
-if __name__ == '__main__':
-    username = argv[1]
-    password = argv[2]
-    db_name = argv[3]
-    name_state = argv[4]
-    db = MySQLdb.connect(host="localhost", port=3306,
-                         user=username, passwd=password, db=db_name)
-    cur = db.cursor()
-    cur.execute("SELECT * FROM states WHERE name \
-                 LIKE BINARY '{}' ORDER BY states.id".format(name_state))
-    for i in cur.fetchall():
-        print(i)
-    cur.close()
-    db.close()
+'''
+Script that lists all states from the database
+'''
+if __name__ == "__main__":
+    cont = MySQLdb.connect(
+        host="localhost", port=3306, user=argv[1],
+        password=argv[2], database=argv[3])
+    cursor = cont.cursor()
+    cursor.execute(
+            "SELECT * FROM states WHERE name LIKE"
+            " '{:s}' ORDER BY id ASC".format(argv[4]))
+    db = cursor.fetchall()
+    for i in db:
+        if i[1] == argv[4]:
+            print(i)

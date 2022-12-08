@@ -1,19 +1,27 @@
 #!/usr/bin/python3
-""" Module 10-model_state_my_get """
+'''
+a script that lists all State objects
+from the database hbtn_0e_6_usa
+'''
+
+
 from sys import argv
-from model_state import Base, State
-from sqlalchemy import (create_engine, MetaData, Table, select)
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from model_state import Base, State
 
 if __name__ == "__main__":
-    engine = create_engine('mysql+mysqldb://{}:{}@localhost/{}'.format(
-                           argv[1], argv[2], argv[3]))
+    engine = create_engine(
+            'mysql+mysqldb://{}:{}@localhost/{}'.format(argv[1],
+                                                        argv[2],
+                                                        argv[3]))
+    Base.metadata.create_all(engine)
     Session = sessionmaker(bind=engine)
     session = Session()
-    state = session.query(
-        State.id).order_by(State.id).filter(State.name == str(argv[4])).all()
-    if state:
-        print(state[0][0])
+    state = session.query(State).filter_by(name=argv[4]).first()
+    if state is not None:
+            print(str(state.id))
     else:
         print("Not found")
     session.close()

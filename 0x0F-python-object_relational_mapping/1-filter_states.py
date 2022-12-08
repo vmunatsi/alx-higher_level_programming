@@ -1,18 +1,20 @@
 #!/usr/bin/python3
-""" Module 0-select_states """
+
+
 import MySQLdb
 from sys import argv
 
-if __name__ == '__main__':
-    username = argv[1]
-    password = argv[2]
-    db_name = argv[3]
-    db = MySQLdb.connect(host="localhost", port=3306,
-                         user=username, passwd=password, db=db_name)
-    cur = db.cursor()
-    cur.execute("SELECT * FROM states WHERE name \
-                LIKE BINARY 'N%' ORDER BY states.id ASC;")
-    for i in cur.fetchall():
+'''
+lists all states with starting name with N
+from the database hbtn_0e_0_usa
+'''
+if __name__ == "__main__":
+    con = MySQLdb.connect(
+        host="localhost", port=3306, user=argv[1],
+        password=argv[2], database=argv[3])
+    cursor = con.cursor()
+    cursor.execute(
+            "SELECT * FROM states WHERE name LIKE BINARY 'N%'ORDER BY id ASC")
+    db = cursor.fetchall()
+    for i in db:
         print(i)
-    cur.close()
-    db.close()
