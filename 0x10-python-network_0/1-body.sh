@@ -1,4 +1,3 @@
-
 #!/bin/bash
-# Takes bytes from body request
-curl -s -f -L "$1" -X GET
+# Displays only body of a 200 status code response
+curl -sL "$1"
