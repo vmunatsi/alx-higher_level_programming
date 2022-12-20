@@ -1,3 +1,3 @@
 #!/bin/bash
-# Script that takes in a URL and displays all HTTP methods the server will accept
-curl -sI "$1" | grep "Allow" | cut -d " " -f2-
+# Takes delete request
+curl -sD - -o /dev/null "$1" | grep "Allow" | cut -d ":" -f2 | cut -b 2-
