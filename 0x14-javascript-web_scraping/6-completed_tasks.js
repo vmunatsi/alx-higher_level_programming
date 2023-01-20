@@ -1,26 +1,25 @@
 #!/usr/bin/node
-// A script that computes the number of tasks completed by user id.
+// Movie where character is "wedge Antilles"
 
-const args = process.argv;
-let reqURL = args[2];
-let request = require('request');
-request(reqURL, function (error, response, body) {
+const request = require('request');
+
+request(process.argv[2], function (error, response, body) {
   if (error) {
-    console.log('error:', error);
+    console.log(error);
   } else {
-    let todos = JSON.parse(body);
-    let dash = {};
-    for (let i = 0; i < todos.length; i++) {
-      let status = (todos[i]['completed']);
-      let key = todos[i]['userId'].toString();
-      if (status) {
-        if (dash[key]) {
-          dash[key]++;
-        } else {
-          dash[key] = 1;
+    if (response.statusCode === 200) {
+      const result = {};
+      body = JSON.parse(body);
+      for (let i = 0; i < body.length; i++) {
+        if (result[body[i].userId] === undefined) {
+          result[body[i].userId] = 0;
+        }
+        if (body[i].completed === true) {
+          const tmp = result[body[i].userId];
+          result[body[i].userId] = tmp + 1;
         }
       }
+      console.log(result);
     }
-    console.log(dash);
   }
 });
